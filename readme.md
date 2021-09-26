@@ -1,7 +1,10 @@
 ViteX Trader
 ------------
+This is my submission for Gitcoins Hackathon Round 11 for the "Open Task - Propose And Create Your Own Project - Up To $20,000 In Reward!" for Vite.
+Using the ViteX public and private API. This Discord bot is a powerful trading tool and market watcher. Users can sign transactions and place orders, when the defined parameters are met in the ViteXtrader's Strategy with a stoploss and takeprofit function. They also can access there account balances, current and closed orders, transaction history, profit and loss data, and coin updates either on demand or by status updates.
+Volume to ViteX will increase as users place many trades on ViteXTrader or even just getting market data updates provided by ViteX API's, and it will aslo attract users looking for a easy-to-use bot, or a open-source project to build on, and trade there favourite pairs trading on ViteX.
 
-Discordf Set Up
+Discord Set Up
 -
 1. Create a Discord Server
 2. Create a discord bot
@@ -13,7 +16,7 @@ Discordf Set Up
     OAuth2 > Permissions set permissions
     
     PERMISSIONS
-    -----------
+    
     - Send Messages
     - Manage Messages
     - Read Message History
