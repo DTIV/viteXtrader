@@ -1,0 +1,6 @@
+requests
+json
+discord.py
+ta
+ccxt
+hashlib
