@@ -27,7 +27,7 @@ Discordf Set Up
 Bot Setup
 -
 
-1. Create ViteX wallet
+1. CREATE VITE X WALLET
 2. Add whitelisted tading pairs to Delegation
 3. Create Virtual Env
 4. Clone Git Repo
