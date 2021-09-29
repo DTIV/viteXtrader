@@ -22,7 +22,7 @@ def set_interval(interval: str):
     sets binance intervals to viteX intervals
     '''
     set_int = None
-    if interval == '1m':
+    if 'm' in interval and interval != '30m':
         set_int = 'minute'
     elif interval == '30m':
         set_int = 'minute30'
@@ -77,6 +77,9 @@ def get_all_tokens(net=config['mainnet']):
     return data, symbol_list
 
 def token_detail(symbol, net=config['mainnet']):
+    '''
+    Gets token detail from ViteX
+    '''
     url = f"{net}/api/v2/token/detail"
     data = get(url,{"tokenSymbol": f'{symbol}'}).json()
     return data

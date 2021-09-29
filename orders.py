@@ -12,6 +12,9 @@ config = json.load(f)
 key = config['vite_key']
 
 def order_status(order):
+    '''
+    Get order status from object returned from limit order
+    '''
     if order != None and 'data' in order:
         return order['data']['status']
     else:
@@ -20,6 +23,9 @@ def order_status(order):
     return None
 
 def get_balance(net=config['mainnet']):
+    '''
+    Get balance from ViteX
+    '''
     url = f"{net}/api/v2/balance"
     try:
         data = get(url,{"address": f"{config['viteconnect_address']}"}).json()
@@ -31,6 +37,9 @@ def get_balance(net=config['mainnet']):
         return data
 
 def get_open_orders(net=config['mainnet']):
+    '''
+    Get open orders from ViteX
+    '''
     url = f"{net}/api/v2/balance"
     try:
         data = get(url,{"address": f"{config['viteconnect_address']}"}).json()
@@ -42,6 +51,9 @@ def get_open_orders(net=config['mainnet']):
         return "No Open Orders For Address", data
 
 def get_active_positions(cache):
+    '''
+    Get active postions from cache
+    '''
     active_list = []
     for symbol in cache:
         if cache[symbol]['data']['active'] == True:
@@ -53,6 +65,9 @@ def get_active_positions(cache):
         return active_list
 
 def get_pnl(cache):
+    '''
+    Get Profit and Loss of active pairs
+    '''
     pnl = {}
     active = get_active_positions(cache)
     if "No Active Positions" not in active:
@@ -67,6 +82,9 @@ def get_pnl(cache):
             
             
 def get_tpsl(entry_price, side: int):
+    '''
+    Get takeprofit and stoploss values base on entry price
+    '''
     if side:
         entry_price = 0.001064
         sl_prc, tp_prc = 10, 10
@@ -83,6 +101,9 @@ def get_tpsl(entry_price, side: int):
         return stoploss, takeprofit
 
 def position_size(close):
+    '''
+    Calculate position size base on available funds in quote currency
+    '''
     size = config['size']
     if config['dynamic_size']:
         data = get_balance()
@@ -114,8 +135,6 @@ def limit_order(size, price, side, symbol, live):
     mainnet = config['mainnet']
     stimestamp= int(str(time()*1000).split(".")[0])
     serverTime= get_time()
-    len(serverTime)
-    new_time = serverTime - stimestamp
     if (stimestamp < (serverTime + 1000) and (serverTime - stimestamp) <= 5000):
         #TX STRING
         tx = fr"amount={size}&key={key}&price={price}&side={side}&symbol={symbol}&timestamp={stimestamp}"
@@ -130,7 +149,6 @@ def limit_order(size, price, side, symbol, live):
             'timestamp': str(stimestamp),
             'signature': signature
         }
-        print("l104 - sending order!")
         response = requests.post(mainnet+endpoint, data=data)
         r = json.loads(response.text)
         return r
@@ -139,6 +157,9 @@ def limit_order(size, price, side, symbol, live):
         # reject request
         
 def buy_set(live, order, sl, tp, data, message, entry, size, active=True):
+    '''
+    Set cache on buy orders
+    '''
     if order != None and 'data' in order.keys() or not live:
         if live:
             data['orderId'] = order['data']['orderId']
@@ -169,6 +190,9 @@ def buy_set(live, order, sl, tp, data, message, entry, size, active=True):
         
 
 def sell_set(live, order, data, message, entry, active=False):
+    '''
+    Set cache on short or sell orders
+    '''
     if (order != None and 'data' in order) or not live:
         if live:
             data['orderId'] = order['data']['orderId']

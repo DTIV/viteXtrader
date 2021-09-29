@@ -28,7 +28,6 @@ def main(cache):
             data = cache[symbol]['data']
             data['symbol'] = symbol
             if data['active'] == False:
-                print("UN-ACTIVE PAIR: ", symbol," ", data['active'])
                
                 '''
                 UNOPEN PAIRS LOOP
@@ -79,14 +78,13 @@ def main(cache):
                     print("ERROR:", symbol, e)
                     pass
             else:
-                print("ACTIVE PAIR: ", symbol," ", data['active'])
                 '''
                 OPEN PAIRS LOOP
                 '''
                 try:
                     if data['side'] == 0:
                         '''
-                        SELL ORDER
+                        CLOSE POSITION
                         '''
                         if dataframe['sell'][0] == 1:
                             message = f"LONG POSITION CLOSED FOR {symbol} - {interval} at {dataframe['close'][0]}"
@@ -95,9 +93,10 @@ def main(cache):
                             if live:
                                 size = ordr.position_size(dataframe['close'][0])
                                 order = ordr.limit_order(size, dataframe['close'][0],1, symbol, live)
-                                ordr.sell_set(True, order, data, message=message)
+                                ordr.sell_set( order, data,live=True, message=message, entry=dataframe['close'][0])
                             else:
-                                ordr.sell_set(False, order, data)
+                                order = None
+                                ordr.sell_set( order, data,live=True, message=message, entry=dataframe['close'][0])
                         '''
                         BUY CLOSE
                         '''
@@ -107,9 +106,10 @@ def main(cache):
                             if live:
                                 size = ordr.position_size(dataframe['close'][0])
                                 order = ordr.limit_order(size, dataframe['close'][0],1, symbol, live)
-                                ordr.sell_set(True, order, data, message)
+                                ordr.sell_set(order, data,live=True, message=message, entry=dataframe['close'][0])
                             else:
-                                ordr.sell_set(True, order, data, message)
+                                order = None
+                                ordr.sell_set( order, data,live=True, message=message, entry=dataframe['close'][0])
                                 
                         '''
                         STOPLOSS & TAKEPROFIT
@@ -122,18 +122,74 @@ def main(cache):
                                     
                                     size = ordr.position_size(dataframe['close'][0])
                                     order = ordr.limit_order(size, dataframe['close'][0],1, symbol, live)
-                                    ordr.sell_set(True, order, data, message)
+                                    ordr.sell_set(order, data,live=True, message=message, entry=dataframe['close'][0])
                                 else:
-                                    ordr.sell_set(True, order, data, message)
+                                    order = None
+                                    ordr.sell_set( order, data,live=True, message=message, entry=dataframe['close'][0])
                         if cache[symbol]['takeprofit'] != None:
                             message = f"!!! TAKEPROFIT !!! LONG POSITION CLOSED FOR {symbol} at {dataframe['close'][0]}"
                             print(message)
                             if dataframe['close'][0] > cache[symbol]['takeprofit']:
                                 if live: 
                                     order = ordr.limit_order(size, dataframe['close'][0],1, symbol, live)
-                                    ordr.sell_set(True, order, data, message)
+                                    ordr.sell_set(order, data,live=True, message=message, entry=dataframe['close'][0])
                                 else:
-                                    ordr.sell_set(True, order, data, message)            
+                                    order = None
+                                    ordr.sell_set( order, data,live=True, message=message, entry=dataframe['close'][0])
+                    else:
+                        '''
+                        CLOSE POSITION
+                        '''
+                        if dataframe['buy'][0] == 1:
+                            message = f"SHORT POSITION CLOSED FOR {symbol} - {interval} at {dataframe['close'][0]}"
+                            print(message)
+                            #CLOSING OPEN PAIR
+                            if live:
+                                size = ordr.position_size(dataframe['close'][0])
+                                order = ordr.limit_order(size, dataframe['close'][0],1, symbol, live)
+                                ordr.sell_set( order, data,live=True, message=message, entry=dataframe['close'][0])
+                            else:
+                                order = None
+                                ordr.sell_set( order, data,live=True, message=message, entry=dataframe['close'][0])
+                        '''
+                        SELL CLOSE
+                        '''
+                        if dataframe['sell_close'][0] == 1:
+                            message = f"SHORT POSITION CLOSED FOR {symbol} - at {dataframe['close'][0]}"
+                            print(message)
+                            if live:
+                                size = ordr.position_size(dataframe['close'][0])
+                                order = ordr.limit_order(size, dataframe['close'][0],1, symbol, live)
+                                ordr.sell_set(order, data,live=True, message=message, entry=dataframe['close'][0])
+                            else:
+                                order = None
+                                ordr.sell_set( order, data,live=True, message=message, entry=dataframe['close'][0])
+                                
+                        '''
+                        STOPLOSS & TAKEPROFIT
+                        '''
+                        if cache[symbol]['stoploss'] != None:
+                            message = f"!!! STOPLOSS !!! SHORT POSITION CLOSED FOR {symbol}  at {dataframe['close'][0]}"
+                            print(message)
+                            if dataframe['close'][0] > cache[symbol]['stoploss']:
+                                if live:
+                                    
+                                    size = ordr.position_size(dataframe['close'][0])
+                                    order = ordr.limit_order(size, dataframe['close'][0],1, symbol, live)
+                                    ordr.sell_set(order, data,live=True, message=message, entry=dataframe['close'][0])
+                                else:
+                                    order = None
+                                    ordr.sell_set( order, data,live=True, message=message, entry=dataframe['close'][0])
+                        if cache[symbol]['takeprofit'] != None:
+                            message = f"!!! TAKEPROFIT !!! LONG POSITION CLOSED FOR {symbol} at {dataframe['close'][0]}"
+                            print(message)
+                            if dataframe['close'][0] < cache[symbol]['takeprofit']:
+                                if live: 
+                                    order = ordr.limit_order(size, dataframe['close'][0],1, symbol, live)
+                                    ordr.sell_set(order, data,live=True, message=message, entry=dataframe['close'][0])
+                                else:
+                                    order = None
+                                    ordr.sell_set( order, data,live=True, message=message, entry=dataframe['close'][0])
                 except Exception as e:
                     print("ERROR:", symbol, e)
                     pass

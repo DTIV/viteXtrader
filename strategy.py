@@ -6,7 +6,7 @@ from ta import trend as tr
 from ta import others as oth
 from functions import get_ohlc
 import pandas as pd
-import copy
+
 
 def strategy(symbol, interval):
     df=get_ohlc(symbol, interval)[::-1].copy()
