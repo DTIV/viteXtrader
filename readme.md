@@ -64,7 +64,8 @@ Bot Setup
     - "whitelist": SELECTED TRADING PAIRS DEFINED IN DELEGATION
         - PRE DEFINED WHITELIST FOR MOST ACCURATE PAIRS
 
-
+    -------------
+    
 7. (optional) Define Custom Strategy in Strategy.py 
     -A Bollingerband RSI strategy is used as and example
 
@@ -77,15 +78,21 @@ Bot Commands
 /menu : List of commands
 
 /start - Start the Vite X Trader
+
 /stop - Stop the bot
 
 /balance - get account balances
-/open - get open orders
+
+/open - get open 
+
 /active - get all active positions
+
 /pnl - get Profit and Loss for active postions
 
 /whitelist : List of current trading pairs
+
 /timeframes : List of time intervals
 
 $ detail <TRADING_PAIR>  :  detail for a specific trading pair on ViteX
+
 $ detail <SYMBOL>  :  detail for a specific currency on ViteX
