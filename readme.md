@@ -1,7 +1,7 @@
 ViteX Trader
 ------------
 This is my submission for Gitcoins Hackathon Round 11 for the "Open Task - Propose And Create Your Own Project - Up To $20,000 In Reward!" for Vite.
-Using the ViteX public and private API. This Discord bot is a powerful trading tool and market watcher. Users can sign transactions and place orders, when the defined parameters are met in the ViteXtrader's Strategy with a stoploss and takeprofit function. They also can access there account balances, current and closed orders, transaction history, profit and loss data, and coin updates either on demand or by status updates.
+Using the ViteX public and private API, this Discord bot is a powerful trading tool and market data explorer. Users can sign transactions and place orders with stoploss and takeprofit, when the user defined strategy parameters are met. Users can access there account balances, current and closed orders, transaction history, profit and loss data, and coin updates either on demand or by status updates.
 
 Volume to ViteX will increase as users stake Vite to get access to private API to place many trades on ViteXTrader or even just getting market data updates provided by ViteX public API's, volume will increase, and it will aslo attract more users looking for a easy-to-use all-purpose bot, or a open-source project to build on, and trade there favourite pairs trading on ViteX.
 
@@ -10,11 +10,12 @@ Discord Set Up
 1. Create a Discord Server
 2. Create a discord bot
     a) https://https://discord.com/developers/applications
+
     b) Create a New Application and create a new bot
     
-3. Create invite url
-    OAuth2 > Scopes check bot
-    OAuth2 > Permissions set permissions
+3.  - Create invite url
+    - OAuth2 > Scopes check bot
+    - OAuth2 > Permissions set permissions
     
     PERMISSIONS
     
@@ -34,6 +35,7 @@ Bot Setup
 1. CREATE VITE X WALLET
 
 2. Add whitelisted tading pairs to Delegation
+    - ensure these pairs match config.py whitelist 
 3. Create Virtual Env
 4. Clone Git Repo
 5. pip install requirements.txt
@@ -56,7 +58,7 @@ Bot Setup
     - "vite_secret": "YOUR_VITE_SECRET"
     - "viteconnect_address": "VITE_CONNECT_ADDRESS"     (optional: api requests that require address) (None as value)
     - "delegation_address": "VITE_DELEGATION_ADDRESS"   (optional: api requests that require address) (None as value)
-    - "whitelist": SELECTED TRADING PAIRS 
+    - "whitelist": SELECTED TRADING PAIRS DEFINED IN DELEGATION
         - PRE DEFINED WHITELIST FOR MOST ACCURATE PAIRS
 
 
@@ -64,3 +66,23 @@ Bot Setup
     -A Bollingerband RSI strategy is used as and example
 
 8. run python vitetrader.py
+
+
+Bot Commands
+------------
+
+/menu : List of commands
+
+/start - Start the Vite X Trader
+/stop - Stop the bot
+
+/balance - get account balances
+/open - get open orders
+/active - get all active positions
+/pnl - get Profit and Loss for active postions
+
+/whitelist : List of current trading pairs
+/timeframes : List of time intervals
+
+$ detail <TRADING_PAIR>  :  detail for a specific trading pair on ViteX
+$ detail <SYMBOL>  :  detail for a specific currency on ViteX

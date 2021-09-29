@@ -10,11 +10,17 @@ config = json.load(f)
 binance = ccxt.binance()
 
 def get_time(net=config['mainnet']):
+    '''
+    returns viteX server time
+    '''
     url = f"{net}/api/v2/timestamp"
     timestamp = get(url).json()
     return timestamp['data']
 
 def set_interval(interval: str):
+    '''
+    sets binance intervals to viteX intervals
+    '''
     set_int = None
     if interval == '1m':
         set_int = 'minute'
@@ -35,6 +41,9 @@ def set_interval(interval: str):
     return set_int
     
 def sort_interval(interval: str, interval_list = list(binance.timeframes)):
+    '''
+    Turns string interval types into Int
+    '''
     minutes = None
     for i in interval_list:
         if i == interval:
@@ -48,35 +57,53 @@ def sort_interval(interval: str, interval_list = list(binance.timeframes)):
                 minutes = 60
     return minutes
 
-def get_all_tokens(net: str, dict):
+def get_all_tokens(net=config['mainnet']):
+    '''
+    Gets all tokens info
+    '''
+    data= {}
     symbol_list = []
     url = f"{net}/api/v2/tokens"
     data = get(url).json()
     for i in data['data']:
         symbol_list.append(i['symbol'])
         name = i['name']
-        dict[name] = {
+        data[name] = {
             "originalSymbol" : i['originalSymbol'],
             "symbol": i['symbol'],
             "tokenId": i['tokenId'],
             "urlIcon": i['urlIcon']
             }
-    return dict, symbol_list
+    return data, symbol_list
 
-def get_trading_pair(net: str, base: str, quote: str):
+def token_detail(symbol, net=config['mainnet']):
+    url = f"{net}/api/v2/token/detail"
+    data = get(url,{"tokenSymbol": f'{symbol}'}).json()
+    return data
+
+
+def get_trading_pair(net: str, symbol):
+    '''
+    Get specific trading pair
+    '''
     url = f"{net}/api/v2/market/"
-    data = get(url,{"symbol": f'{base}_{quote}'}).json()
+    data = get(url,{"symbol": f'{symbol}'}).json()
     return data['data']
 
 def get_quote_pairs(quote, pairs_list):
+    '''
+    get all pairs with selected quote currency
+    '''
     quote_pairs = []
     for i in pairs_list:
         if f"/{quote}" in i:
             quote_pairs.append(i)
     return quote_pairs
 
-net = config['mainnet']
 def get_all_pairs(net):
+    '''
+    get all trading pairs
+    '''
     pairslist=[]
     binancelist=[]
     symbol_dict = {}
@@ -89,11 +116,10 @@ def get_all_pairs(net):
         symbol_dict[new_str] = i['symbol']
     return pairslist, binancelist, symbol_dict
 
-symbol= "BEAM-000_BTC-000"
-
-
-
 def market_check(symbol_list):
+    '''
+    Check if trading pairs are on binance
+    '''
     binance_list = []
     binance = ccxt.binance()
     b_mrkt = binance.load_markets()
@@ -104,6 +130,9 @@ def market_check(symbol_list):
     return binance_list
 
 def cut_symbol(vite_symbol):
+    '''
+    cuts viteX symbol into binance symbol
+    '''
     return vite_symbol.replace("-000","").replace("-001","").replace("_","/")
 
 def get_ohlc(symbol, interval, net=config['mainnet']):
@@ -138,6 +167,9 @@ def get_ohlc(symbol, interval, net=config['mainnet']):
     return df
 
 def get_cache(symbol):
+    '''
+    Resets or gets new cache
+    '''
     cache={}
     cache[symbol] = {
         'active': False,
@@ -156,6 +188,9 @@ def get_cache(symbol):
     return cache
     
 def historical_data(cache, whitelist, interval):
+    '''
+    get multiple ohlc data
+    '''
     for i in whitelist:
         cache[i] = get_ohlc(i, interval)
     return cache
