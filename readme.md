@@ -40,7 +40,9 @@ Bot Setup
 4. Clone Git Repo
 5. pip install requirements.txt
 6. Create config.json using sample_config.json
+
      Add only the trading pairs that are delegated to the whitelist
+     
     CONFIG.JS
     ---------
     - "live": Live Trading
