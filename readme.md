@@ -93,6 +93,6 @@ Bot Commands
 
 /timeframes : List of time intervals
 
-$ detail <TRADING_PAIR>  :  detail for a specific trading pair on ViteX
+$ detail < TRADING_PAIR >  :  detail for a specific trading pair on ViteX
 
-$ detail <SYMBOL>  :  detail for a specific currency on ViteX
+$ detail < SYMBOL >  :  detail for a specific currency on ViteX
